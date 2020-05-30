@@ -19,9 +19,23 @@ namespace TestSelectMany
     /// </summary>
     public partial class MainWindow : Window
     {
+        private System.Collections.IEnumerable lbIts;
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            lbIts = lbResults.ItemsSource;
+            lbResults.ItemsSource = null;
+        }
+        
+        private void Connect_Click(object sender, RoutedEventArgs e)
+        {
+            lbResults.ItemsSource =lbIts;
+        }
+
     }
 }
