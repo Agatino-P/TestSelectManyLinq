@@ -10,6 +10,9 @@ namespace TestSelectMany
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private int _testNumber=5; 
+        public int TestNumber { get => _testNumber; set { Set(() => TestNumber, ref _testNumber, value); }}
+
         private class Permutation : List<string> { }
         private readonly List<Permutation> outputData = new List<Permutation>();
 
@@ -19,15 +22,15 @@ namespace TestSelectMany
         private ObservableCollection<string> _inputData = new ObservableCollection<string>();
         public ObservableCollection<string> InputData { get => _inputData; set => Set(() => InputData, ref _inputData, value); }
 
-        private RelayCommand<string> _testCmd;
-        public RelayCommand<string> TestCmd => _testCmd ?? (_testCmd = new RelayCommand<string>(
-            (s) => test(int.Parse(s)),
-            (s) => { return 1 == 1; },
+        private RelayCommand _testCmd;
+        public RelayCommand TestCmd => _testCmd ?? (_testCmd = new RelayCommand(
+            () => test(),
+            () => (1 <= TestNumber && TestNumber <=5 ) ,
             keepTargetAlive: true
             ));
-        private void test(int i)
+        private void test()
         {
-            switch (i)
+            switch (TestNumber)
             {
                 case 1:
                     doWork1();
@@ -38,11 +41,30 @@ namespace TestSelectMany
                 case 3:
                     doWork3();
                     break;
+                case 4:
+                    doWork4();
+                    break;
+                case 5:
+                    doWork5();
+                    break;
 
                 default:
                     break;
             }
         }
+
+        private void doWork5()
+        {
+            var pippo = InputData.Select(iditem => sonoFattiMiei(iditem));
+            _ = pippo.Count();
+        }
+
+        private bool sonoFattiMiei(string idata)
+        {
+            Debug.WriteLine($"fm{idata}");
+                return (idata=="2");
+        }
+
 
         public MainWindowViewModel()
         {
@@ -88,25 +110,7 @@ namespace TestSelectMany
             */
         }
 
-        private void doWork3()
-        {
-            Results.Clear();
-            Stopwatch sw = new Stopwatch();
-
-            sw.Start();
-            IEnumerable<IEnumerable<string>> res = getPermutations<string>(InputData, InputData.Count);
-            sw.Stop();
-            Results.Add($"Calculated in {sw.ElapsedMilliseconds}ms");
-
-            sw.Start();
-            foreach (IEnumerable<string> el in res)
-            {
-                Results.Add(enumerableToString(el));
-            }
-            sw.Stop();
-            Results.Insert(1,$"Displayed in {sw.ElapsedMilliseconds}ms");
-
-        }
+      
 
         private string enumerableToString<T>(IEnumerable<T> inputEnumerable)
         {
@@ -152,6 +156,27 @@ namespace TestSelectMany
                 Results.Add(el);
             }
         }
+
+        private void doWork3()
+        {
+            Results.Clear();
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+            IEnumerable<IEnumerable<string>> res = getPermutations<string>(InputData, InputData.Count);
+            sw.Stop();
+            Results.Add($"Calculated in {sw.ElapsedMilliseconds}ms");
+
+            sw.Start();
+            foreach (IEnumerable<string> el in res)
+            {
+                Results.Add(enumerableToString(el));
+            }
+            sw.Stop();
+            Results.Insert(1, $"Displayed in {sw.ElapsedMilliseconds}ms");
+
+        }
+
         private class PetOwner
         {
             public string Name { get; set; }

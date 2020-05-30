@@ -21,17 +21,15 @@
         </Grid.ColumnDefinitions>
         <ListBox Grid.Column="0" ItemsSource="{Binding InputData}" />
         <DockPanel Grid.Column="1" LastChildFill="False">
+            <TextBox DockPanel.Dock="Top" FontSize="18"
+                     Text="{Binding TestNumber}" />
             <Button Command="{Binding TestCmd}"
-                    CommandParameter="1" Content="Test 1" DockPanel.Dock="Top" />
-            <Button Command="{Binding TestCmd}"
-                    CommandParameter="2" Content="Test 2" DockPanel.Dock="Top" />
-            <Button Command="{Binding TestCmd}"
-                    CommandParameter="3" Content="Test 3" DockPanel.Dock="Top" />
+                    Content="Test" DockPanel.Dock="Top" />
         </DockPanel>
         <DockPanel Grid.Column="2">
             <Button x:Name="Connect" Click="Connect_Click" Content="Connect"
                     DockPanel.Dock="Bottom" />
-            <Button x:Name="Disconnect" Click="Disconnect_Click"  
+            <Button x:Name="Disconnect" Click="Disconnect_Click"
                     Content="Disconnect" DockPanel.Dock="Bottom" />
             <ListBox x:Name="lbResults" DockPanel.Dock="Top"
                      ItemsSource="{Binding Results}" />
